@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel, Image and Text Demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+</head>
+<body>
+    <h1>Excel Data</h1>
+    <table id="data-table" border="1">
+    </table>
+    
+    <h1>Image</h1>
+    <img src="my_love.jpg" alt="Your Image" width="300" />
+
+    <h1>Text</h1>
+    <p>This is a sample text paragraph for your website. You can replace this with your own text.</p>
+
+    <script>
+        // Fetch the CSV file from the directory
+        fetch('chart.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                Papa.parse(csvData, {
+                    header: true,
+                    dynamicTyping: true,
+                    complete: function (results) {
+                        displayData(results.data);
+                    }
+                });
+            });
+
+        function displayData(data) {
+            let table = document.getElementById('data-table');
+            table.innerHTML = '';
+            let header = table.createTHead().insertRow(0);
+            for (let key in data[0]) {
+                header.insertCell().textContent = key;
+            }
+            for (let row of data) {
+                let tableRow = table.insertRow();
+                for (let key in row) {
+                    tableRow.insertCell().textContent = row[key];
+                }
+            }
+        }
+    </script>
+</body>
+</html>
